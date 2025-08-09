@@ -6,13 +6,9 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-// Fontes do Google Fonts com fallbacks
-val MontserratFontFamily = FontFamily.Default // Fallback para system fonts
-val RobotoFontFamily = FontFamily.Default // Fallback para system fonts  
-val FiraCodeFontFamily = FontFamily.Monospace // Fallback para monospace
+import com.rekognizevote.R
 
-// TODO: Descomente quando as fontes forem adicionadas à pasta res/font/
-/*
+// Fontes customizadas do projeto
 val MontserratFontFamily = FontFamily(
     Font(R.font.montserrat_regular, FontWeight.Normal),
     Font(R.font.montserrat_medium, FontWeight.Medium),
@@ -30,7 +26,6 @@ val FiraCodeFontFamily = FontFamily(
     Font(R.font.fira_code_regular, FontWeight.Normal),
     Font(R.font.fira_code_medium, FontWeight.Medium)
 )
-*/
 
 // Typography
 val Typography = Typography(

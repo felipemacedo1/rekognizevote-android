@@ -2,8 +2,9 @@ package com.rekognizevote.di
 
 import com.rekognizevote.BuildConfig
 import com.rekognizevote.core.Constants
-import com.rekognizevote.data.remote.ApiService
+import com.rekognizevote.data.interceptor.TokenRefreshInterceptor
 import com.rekognizevote.data.local.SecureStorage
+import com.rekognizevote.data.remote.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,9 +51,22 @@ object NetworkModule {
     
     @Provides
     @Singleton
-    fun provideOkHttpClient(authInterceptor: Interceptor): OkHttpClient {
+    fun provideTokenRefreshInterceptor(
+        secureStorage: SecureStorage,
+        apiService: ApiService
+    ): TokenRefreshInterceptor {
+        return TokenRefreshInterceptor(secureStorage, apiService)
+    }
+    
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(
+        authInterceptor: Interceptor,
+        tokenRefreshInterceptor: TokenRefreshInterceptor
+    ): OkHttpClient {
         val builder = OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
+            .addInterceptor(tokenRefreshInterceptor)
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)

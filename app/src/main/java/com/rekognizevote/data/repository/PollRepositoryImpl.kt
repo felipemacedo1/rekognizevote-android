@@ -1,23 +1,34 @@
 package com.rekognizevote.data.repository
 
+import android.content.Context
 import com.rekognizevote.core.Constants
 import com.rekognizevote.core.Result
+import com.rekognizevote.core.utils.NetworkUtils
+import com.rekognizevote.data.local.PollCache
 import com.rekognizevote.data.remote.ApiService
 import com.rekognizevote.domain.model.Candidate
 import com.rekognizevote.domain.model.Poll
 import com.rekognizevote.domain.repository.PollRepository
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class PollRepositoryImpl @Inject constructor(
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val pollCache: PollCache,
+    @ApplicationContext private val context: Context
 ) : PollRepository {
     
     override suspend fun getPolls(status: String): Result<List<Poll>> {
         return try {
-            // Mock data para desenvolvimento
             val mockPolls = createMockPolls(status)
+            
+            // Salvar no cache
+            if (NetworkUtils.isNetworkAvailable(context)) {
+                pollCache.savePolls(mockPolls)
+            }
+            
             Result.Success(mockPolls)
             
             // Implementação real:

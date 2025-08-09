@@ -29,11 +29,15 @@ android {
         }
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
             buildConfigField("String", "BASE_URL", "\"https://api.rekognizevote.com/\"")
+            
+            // Signing config (configure keystore)
+            // signingConfig = signingConfigs.getByName("release")
         }
     }
     
@@ -107,6 +111,10 @@ dependencies {
     
     // Testing
     testImplementation(libs.junit)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.kotlin.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.compose.bom))

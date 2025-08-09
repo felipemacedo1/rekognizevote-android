@@ -80,7 +80,6 @@ dependencies {
     // Hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
-    ksp(libs.hilt.compiler)
     ksp(libs.hilt.android.compiler)
     
     // Network
@@ -98,6 +97,10 @@ dependencies {
     
     // Image
     implementation(libs.coil.compose)
+    implementation(libs.androidx.exifinterface)
+    
+    // Icons
+    implementation(libs.compose.material.icons.extended)
     
     // Security
     implementation(libs.security.crypto)

@@ -7,7 +7,7 @@ import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -83,7 +83,7 @@ fun CameraPreview(
             containerColor = MaterialTheme.colorScheme.primary
         ) {
             Icon(
-                imageVector = Icons.Default.CameraAlt,
+                imageVector = Icons.Default.PhotoCamera,
                 contentDescription = "Capturar foto",
                 modifier = Modifier.size(32.dp)
             )

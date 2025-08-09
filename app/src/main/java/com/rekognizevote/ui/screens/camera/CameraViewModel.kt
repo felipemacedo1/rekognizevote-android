@@ -6,7 +6,6 @@ import com.rekognizevote.core.Result
 import com.rekognizevote.core.utils.ImageUtils
 import com.rekognizevote.data.dto.PresignedUrlResponse
 import com.rekognizevote.domain.repository.VoteRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -15,10 +14,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
-import javax.inject.Inject
 
-@HiltViewModel
-class CameraViewModel @Inject constructor(
+class CameraViewModel(
     private val voteRepository: VoteRepository,
     private val okHttpClient: OkHttpClient
 ) : ViewModel() {
@@ -31,15 +28,12 @@ class CameraViewModel @Inject constructor(
             _uiState.value = _uiState.value.copy(isUploading = true, error = null)
             
             try {
-                // Comprimir imagem
                 val compressedFile = ImageUtils.compressImage(imageFile) ?: imageFile
                 
-                // Obter URL pré-assinada
                 when (val urlResult = voteRepository.getPresignedUrl()) {
                     is Result.Success<PresignedUrlResponse> -> {
                         val presignedUrl = urlResult.data
                         
-                        // Upload para S3
                         val requestBody = compressedFile.asRequestBody("image/jpeg".toMediaType())
                         val request = Request.Builder()
                             .url(presignedUrl.uploadUrl)

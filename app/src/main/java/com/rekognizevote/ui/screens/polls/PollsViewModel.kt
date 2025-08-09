@@ -5,30 +5,29 @@ import androidx.lifecycle.viewModelScope
 import com.rekognizevote.core.Result
 import com.rekognizevote.domain.model.Poll
 import com.rekognizevote.domain.repository.PollRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class HomeViewModel @Inject constructor(
+class PollsViewModel(
     private val pollRepository: PollRepository
 ) : ViewModel() {
     
     private val _pollsState = MutableStateFlow<Result<List<Poll>>>(Result.Loading)
-    val pollsState: StateFlow<Result<List<Poll>>> = _pollsState.asStateFlow()
+    val pollsState: StateFlow<Result<List<Poll>>> = _pollsState
     
-    fun loadPolls(status: String) {
+    init {
+        loadPolls()
+    }
+    
+    fun loadPolls(status: String = "active") {
         viewModelScope.launch {
             _pollsState.value = Result.Loading
-            try {
-                val result = pollRepository.getPolls(status)
-                _pollsState.value = result
-            } catch (e: Exception) {
-                _pollsState.value = Result.Error(e)
-            }
+            _pollsState.value = pollRepository.getPolls(status)
         }
+    }
+    
+    fun refreshPolls() {
+        loadPolls()
     }
 }

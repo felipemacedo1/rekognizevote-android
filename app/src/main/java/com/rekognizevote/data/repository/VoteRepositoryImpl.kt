@@ -5,11 +5,8 @@ import com.rekognizevote.data.dto.*
 import com.rekognizevote.data.remote.ApiService
 import com.rekognizevote.domain.model.Vote
 import com.rekognizevote.domain.repository.VoteRepository
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class VoteRepositoryImpl @Inject constructor(
+class VoteRepositoryImpl(
     private val apiService: ApiService
 ) : VoteRepository {
     

@@ -49,7 +49,7 @@ object AppModule {
     }
     
     val pollRepository: PollRepository by lazy {
-        PollRepositoryImpl(apiService)
+        PollRepositoryImpl(apiService, secureStorage.context)
     }
     
     val voteRepository: VoteRepository by lazy {

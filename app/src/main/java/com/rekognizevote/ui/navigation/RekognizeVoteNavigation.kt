@@ -1,133 +1,113 @@
 package com.rekognizevote.ui.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import com.rekognizevote.di.AppModule
+import com.rekognizevote.ui.ViewModelFactory
+import com.rekognizevote.ui.screens.auth.AuthViewModel
 import com.rekognizevote.ui.screens.auth.LoginScreen
 import com.rekognizevote.ui.screens.auth.RegisterScreen
-import com.rekognizevote.ui.screens.onboarding.OnboardingScreen
+import com.rekognizevote.ui.screens.camera.CameraScreen
+import com.rekognizevote.ui.screens.camera.CameraViewModel
 import com.rekognizevote.ui.screens.onboarding.SplashScreen
 import com.rekognizevote.ui.screens.polls.HomeScreen
 import com.rekognizevote.ui.screens.polls.PollDetailsScreen
+import com.rekognizevote.ui.screens.polls.PollsViewModel
 import com.rekognizevote.ui.screens.results.ResultsScreen
 import com.rekognizevote.ui.screens.vote.VoteScreen
+import com.rekognizevote.ui.screens.vote.VoteViewModel
 
 @Composable
-fun RekognizeVoteNavigation(
-    modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
-) {
+fun RekognizeVoteNavigation(navController: NavHostController) {
+    val viewModelFactory = ViewModelFactory()
+    
     NavHost(
         navController = navController,
-        startDestination = Routes.Splash.route,
-        modifier = modifier
+        startDestination = "splash"
     ) {
-        composable(Routes.Splash.route) {
+        composable("splash") {
             SplashScreen(
-                onNavigateToOnboarding = {
-                    navController.navigate(Routes.Onboarding.route) {
-                        popUpTo(Routes.Splash.route) { inclusive = true }
-                    }
-                },
-                onNavigateToHome = {
-                    navController.navigate(Routes.Home.route) {
-                        popUpTo(Routes.Splash.route) { inclusive = true }
-                    }
-                }
+                onNavigateToAuth = { navController.navigate("login") },
+                onNavigateToHome = { navController.navigate("home") }
             )
         }
         
-        composable(Routes.Onboarding.route) {
-            OnboardingScreen(
-                onNavigateToLogin = {
-                    navController.navigate(Routes.Login.route)
-                }
-            )
-        }
-        
-        composable(Routes.Login.route) {
+        composable("login") {
+            val viewModel: AuthViewModel = viewModel(factory = viewModelFactory)
             LoginScreen(
-                onNavigateToRegister = {
-                    navController.navigate(Routes.Register.route)
-                },
-                onNavigateToHome = {
-                    navController.navigate(Routes.Home.route) {
-                        popUpTo(Routes.Login.route) { inclusive = true }
-                    }
-                },
-                viewModel = hiltViewModel()
+                onNavigateToRegister = { navController.navigate("register") },
+                onNavigateToHome = { navController.navigate("home") },
+                viewModel = viewModel
             )
         }
         
-        composable(Routes.Register.route) {
+        composable("register") {
+            val viewModel: AuthViewModel = viewModel(factory = viewModelFactory)
             RegisterScreen(
-                onNavigateToLogin = {
-                    navController.popBackStack()
-                },
-                onNavigateToHome = {
-                    navController.navigate(Routes.Home.route) {
-                        popUpTo(Routes.Register.route) { inclusive = true }
-                    }
-                },
-                viewModel = hiltViewModel()
+                onNavigateToLogin = { navController.navigate("login") },
+                onNavigateToHome = { navController.navigate("home") },
+                viewModel = viewModel
             )
         }
         
-        composable(Routes.Home.route) {
+        composable("home") {
+            val viewModel: PollsViewModel = viewModel(factory = viewModelFactory)
             HomeScreen(
                 onNavigateToPollDetails = { pollId ->
-                    navController.navigate(Routes.PollDetails.createRoute(pollId))
-                },
-                onNavigateToProfile = {
-                    navController.navigate(Routes.Profile.route)
-                },
-                viewModel = hiltViewModel()
-            )
-        }
-        
-        composable(Routes.PollDetails.route) { backStackEntry ->
-            val pollId = backStackEntry.arguments?.getString("pollId") ?: ""
-            PollDetailsScreen(
-                pollId = pollId,
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-                onNavigateToVote = { pollId ->
-                    navController.navigate(Routes.Vote.createRoute(pollId))
+                    navController.navigate("poll_details/$pollId")
                 },
                 onNavigateToResults = { pollId ->
-                    navController.navigate(Routes.Results.createRoute(pollId))
+                    navController.navigate("results/$pollId")
                 },
-                viewModel = hiltViewModel()
+                viewModel = viewModel
             )
         }
         
-        composable(Routes.Vote.route) { backStackEntry ->
+        composable("poll_details/{pollId}") { backStackEntry ->
             val pollId = backStackEntry.arguments?.getString("pollId") ?: ""
+            val viewModel: PollsViewModel = viewModel(factory = viewModelFactory)
+            PollDetailsScreen(
+                pollId = pollId,
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToVote = { pollId ->
+                    navController.navigate("vote/$pollId")
+                },
+                viewModel = viewModel
+            )
+        }
+        
+        composable("vote/{pollId}") { backStackEntry ->
+            val pollId = backStackEntry.arguments?.getString("pollId") ?: ""
+            val viewModel: VoteViewModel = viewModel(factory = viewModelFactory)
             VoteScreen(
                 pollId = pollId,
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-                onVoteSuccess = {
-                    navController.popBackStack()
-                },
-                viewModel = hiltViewModel()
+                onNavigateBack = { navController.popBackStack() },
+                onVoteSuccess = { navController.navigate("results/$pollId") },
+                viewModel = viewModel
             )
         }
         
-        composable(Routes.Results.route) { backStackEntry ->
+        composable("results/{pollId}") { backStackEntry ->
             val pollId = backStackEntry.arguments?.getString("pollId") ?: ""
+            val viewModel: PollsViewModel = viewModel(factory = viewModelFactory)
             ResultsScreen(
                 pollId = pollId,
-                onNavigateBack = {
+                onNavigateBack = { navController.popBackStack() },
+                viewModel = viewModel
+            )
+        }
+        
+        composable("camera") {
+            val viewModel: CameraViewModel = viewModel(factory = viewModelFactory)
+            CameraScreen(
+                onImageCaptured = { imageUri ->
                     navController.popBackStack()
                 },
-                viewModel = hiltViewModel()
+                onDismiss = { navController.popBackStack() },
+                viewModel = viewModel
             )
         }
     }

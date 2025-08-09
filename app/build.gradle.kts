@@ -7,6 +7,22 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
+// Dependency constraints for JavaPoet conflict resolution
+configurations.all {
+    resolutionStrategy {
+        force("com.squareup:javapoet:1.13.0")
+        eachDependency {
+            if (requested.group == "com.google.dagger" && requested.name.startsWith("hilt")) {
+                useVersion("2.52")
+            }
+            if (requested.group == "com.squareup" && requested.name == "javapoet") {
+                useVersion("1.13.0")
+                because("Force JavaPoet 1.13.0 for Hilt compatibility")
+            }
+        }
+    }
+}
+
 android {
     namespace = "com.rekognizevote"
     compileSdk = 35
@@ -77,7 +93,7 @@ dependencies {
     implementation(libs.compose.navigation)
     implementation(libs.lifecycle.viewmodel.compose)
     
-    // Hilt
+    // Hilt - Unified version management
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)

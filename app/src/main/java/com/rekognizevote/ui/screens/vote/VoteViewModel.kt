@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rekognizevote.core.Result
 import com.rekognizevote.domain.model.Poll
-import com.rekognizevote.domain.model.VoteResponse
+import com.rekognizevote.domain.model.Vote
 import com.rekognizevote.domain.repository.PollRepository
 import com.rekognizevote.domain.repository.VoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,12 +23,10 @@ class VoteViewModel @Inject constructor(
     private val _pollState = MutableStateFlow<Result<Poll>>(Result.Loading)
     val pollState: StateFlow<Result<Poll>> = _pollState.asStateFlow()
     
-    private val _voteState = MutableStateFlow<Result<VoteResponse>>(Result.Loading)
-    val voteState: StateFlow<Result<VoteResponse>> = _voteState.asStateFlow()
+    private val _voteState = MutableStateFlow<Result<Vote>?>(null)
+    val voteState: StateFlow<Result<Vote>?> = _voteState.asStateFlow()
     
-    init {
-        _voteState.value = Result.Success(VoteResponse(true, ""))
-    }
+
     
     fun loadPoll(pollId: String) {
         viewModelScope.launch {

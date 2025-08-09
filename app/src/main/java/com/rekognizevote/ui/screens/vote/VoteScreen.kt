@@ -137,7 +137,7 @@ private fun VoteContent(
     selectedCandidate: Candidate?,
     onCandidateSelected: (Candidate) -> Unit,
     onConfirmVote: () -> Unit,
-    voteState: Result<com.rekognizevote.domain.model.VoteResponse>
+    voteState: Result<com.rekognizevote.domain.model.Vote>?
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),

@@ -66,6 +66,9 @@ class CameraViewModel @Inject constructor(
                             error = urlResult.exception.message
                         )
                     }
+                    is Result.Loading -> {
+                        // Continua carregando
+                    }
                 }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(

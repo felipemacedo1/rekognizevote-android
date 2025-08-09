@@ -1,42 +1,32 @@
 package com.rekognizevote.core.permissions
 
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
+import android.content.pm.PackageManager
 
 @Composable
-fun rememberCameraPermission(
+fun PermissionHandler(
+    permission: String,
     onPermissionGranted: () -> Unit,
     onPermissionDenied: () -> Unit
-): () -> Unit {
+) {
     val context = LocalContext.current
     
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
+    val hasPermission = remember {
+        ContextCompat.checkSelfPermission(
+            context,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+    
+    if (hasPermission) {
+        LaunchedEffect(Unit) {
             onPermissionGranted()
-        } else {
+        }
+    } else {
+        LaunchedEffect(Unit) {
             onPermissionDenied()
         }
     }
-    
-    return {
-        when {
-            hasCameraPermission(context) -> onPermissionGranted()
-            else -> launcher.launch(Manifest.permission.CAMERA)
-        }
-    }
-}
-
-fun hasCameraPermission(context: Context): Boolean {
-    return ContextCompat.checkSelfPermission(
-        context,
-        Manifest.permission.CAMERA
-    ) == PackageManager.PERMISSION_GRANTED
 }

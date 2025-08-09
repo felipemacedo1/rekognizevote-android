@@ -13,19 +13,31 @@ class AuthRepositoryImpl(
     
     override suspend fun login(email: String, password: String): Result<AuthResponse> {
         return try {
-            val response = apiService.login(LoginRequest(email, password))
-            if (response.isSuccessful) {
-                response.body()?.let { authResponse ->
-                    // Salvar tokens
-                    secureStorage.saveToken(authResponse.accessToken)
-                    secureStorage.saveRefreshToken(authResponse.refreshToken)
-                    secureStorage.saveUserId(authResponse.user.id)
-                    secureStorage.saveUserEmail(authResponse.user.email)
-                    
-                    Result.Success(authResponse)
-                } ?: Result.Error(Exception("Resposta vazia"))
+            // MODO MOCK - Simular login bem-sucedido
+            kotlinx.coroutines.delay(1000) // Simular delay de rede
+            
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                val mockUser = User(
+                    id = "mock_user_123",
+                    name = "Usuário Teste",
+                    email = email,
+                    createdAt = "2024-01-01T00:00:00Z"
+                )
+                val mockAuthResponse = AuthResponse(
+                    accessToken = "mock_access_token_123",
+                    refreshToken = "mock_refresh_token_123",
+                    user = mockUser
+                )
+                
+                // Salvar tokens mock
+                secureStorage.saveToken(mockAuthResponse.accessToken)
+                secureStorage.saveRefreshToken(mockAuthResponse.refreshToken)
+                secureStorage.saveUserId(mockAuthResponse.user.id)
+                secureStorage.saveUserEmail(mockAuthResponse.user.email)
+                
+                Result.Success(mockAuthResponse)
             } else {
-                Result.Error(Exception("Erro de login: ${response.message()}"))
+                Result.Error(Exception("Email e senha são obrigatórios"))
             }
         } catch (e: Exception) {
             Result.Error(e)
@@ -34,19 +46,31 @@ class AuthRepositoryImpl(
     
     override suspend fun register(name: String, email: String, password: String): Result<AuthResponse> {
         return try {
-            val response = apiService.register(RegisterRequest(name, email, password))
-            if (response.isSuccessful) {
-                response.body()?.let { authResponse ->
-                    // Salvar tokens
-                    secureStorage.saveToken(authResponse.accessToken)
-                    secureStorage.saveRefreshToken(authResponse.refreshToken)
-                    secureStorage.saveUserId(authResponse.user.id)
-                    secureStorage.saveUserEmail(authResponse.user.email)
-                    
-                    Result.Success(authResponse)
-                } ?: Result.Error(Exception("Resposta vazia"))
+            // MODO MOCK - Simular registro bem-sucedido
+            kotlinx.coroutines.delay(1000) // Simular delay de rede
+            
+            if (name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
+                val mockUser = User(
+                    id = "mock_user_${System.currentTimeMillis()}",
+                    name = name,
+                    email = email,
+                    createdAt = "2024-01-01T00:00:00Z"
+                )
+                val mockAuthResponse = AuthResponse(
+                    accessToken = "mock_access_token_${System.currentTimeMillis()}",
+                    refreshToken = "mock_refresh_token_${System.currentTimeMillis()}",
+                    user = mockUser
+                )
+                
+                // Salvar tokens mock
+                secureStorage.saveToken(mockAuthResponse.accessToken)
+                secureStorage.saveRefreshToken(mockAuthResponse.refreshToken)
+                secureStorage.saveUserId(mockAuthResponse.user.id)
+                secureStorage.saveUserEmail(mockAuthResponse.user.email)
+                
+                Result.Success(mockAuthResponse)
             } else {
-                Result.Error(Exception("Erro de registro: ${response.message()}"))
+                Result.Error(Exception("Todos os campos são obrigatórios"))
             }
         } catch (e: Exception) {
             Result.Error(e)

@@ -1,5 +1,7 @@
 package com.rekognizevote.di
 
+import com.rekognizevote.BuildConfig
+import com.rekognizevote.core.security.CertificatePinner
 import com.rekognizevote.data.local.SecureStorage
 import com.rekognizevote.data.remote.ApiService
 import com.rekognizevote.data.repository.AuthRepositoryImpl
@@ -23,16 +25,22 @@ object AppModule {
     }
     
     val okHttpClient by lazy {
-        OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            })
+        val baseClient = CertificatePinner.createSecureOkHttpClient(BuildConfig.DEBUG)
+        
+        baseClient.newBuilder()
+            .apply {
+                if (BuildConfig.DEBUG) {
+                    addInterceptor(HttpLoggingInterceptor().apply {
+                        level = HttpLoggingInterceptor.Level.BODY
+                    })
+                }
+            }
             .build()
     }
     
     private val retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl("https://api.rekognizevote.com/")
+            .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()

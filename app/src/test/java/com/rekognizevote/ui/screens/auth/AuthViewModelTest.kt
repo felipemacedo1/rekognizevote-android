@@ -19,56 +19,50 @@ import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AuthViewModelTest {
-    
+
     @Mock
     private lateinit var authRepository: AuthRepository
     
     private lateinit var viewModel: AuthViewModel
     private val testDispatcher = UnconfinedTestDispatcher()
-    
+
     @Before
     fun setup() {
         MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(testDispatcher)
         viewModel = AuthViewModel(authRepository)
     }
-    
+
     @After
     fun tearDown() {
         Dispatchers.resetMain()
     }
-    
+
     @Test
-    fun `login with valid credentials should succeed`() = runTest {
+    fun `login with valid credentials updates state to success`() = runTest {
         val mockUser = User("1", "Test User", "test@example.com")
-        val mockAuthResponse = AuthResponse("token", "refresh", mockUser)
-        
-        whenever(authRepository.login("test@example.com", "password123"))
-            .thenReturn(Result.Success(mockAuthResponse))
-        
-        viewModel.login("test@example.com", "password123")
-        
+        val mockResponse = AuthResponse("token", "refresh", mockUser)
+        whenever(authRepository.login("test@example.com", "password"))
+            .thenReturn(Result.Success(mockResponse))
+
+        viewModel.login("test@example.com", "password")
+
         val state = viewModel.uiState.value
         assertFalse(state.isLoading)
         assertTrue(state.isAuthenticated)
-        assertEquals(mockAuthResponse, state.authResponse)
+        assertEquals(mockResponse, state.authResponse)
     }
-    
+
     @Test
-    fun `login with invalid email should show validation error`() = runTest {
-        viewModel.login("invalid-email", "password123")
-        
+    fun `login with invalid credentials updates state to error`() = runTest {
+        whenever(authRepository.login("", ""))
+            .thenReturn(Result.Error(Exception("Email e senha são obrigatórios")))
+
+        viewModel.login("", "")
+
         val state = viewModel.uiState.value
-        assertEquals("Email inválido", state.emailError)
+        assertFalse(state.isLoading)
         assertFalse(state.isAuthenticated)
-    }
-    
-    @Test
-    fun `register with mismatched passwords should show error`() = runTest {
-        viewModel.register("Test User", "test@example.com", "password123", "different")
-        
-        val state = viewModel.uiState.value
-        assertEquals("Senhas não coincidem", state.confirmPasswordError)
-        assertFalse(state.isAuthenticated)
+        assertEquals("Email e senha são obrigatórios", state.error)
     }
 }

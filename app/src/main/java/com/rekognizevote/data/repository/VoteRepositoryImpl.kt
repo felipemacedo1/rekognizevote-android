@@ -13,7 +13,7 @@ class VoteRepositoryImpl @Inject constructor(
     private val apiService: ApiService
 ) : VoteRepository {
     
-    override suspend fun vote(pollId: String, candidateId: String, faceImageUrl: String): Result<Vote> {
+    override suspend fun submitVote(pollId: String, candidateId: String, faceImageUrl: String): Result<Vote> {
         return try {
             val response = apiService.vote(pollId, VoteRequest(candidateId, faceImageUrl))
             if (response.isSuccessful) {
@@ -30,7 +30,7 @@ class VoteRepositoryImpl @Inject constructor(
     
     override suspend fun getPresignedUrl(): Result<PresignedUrlResponse> {
         return try {
-            val response = apiService.getPresignedUrl(PresignedUrlRequest())
+            val response = apiService.getPresignedUrl("face_evidence")
             if (response.isSuccessful) {
                 response.body()?.let { urlResponse ->
                     Result.Success(urlResponse)

@@ -24,8 +24,9 @@ fun CameraScreen(
         }
         
         uiState.imageUrl != null -> {
-            LaunchedEffect(uiState.imageUrl) {
-                onImageCaptured(uiState.imageUrl)
+            val imageUrl = uiState.imageUrl!!
+            LaunchedEffect(imageUrl) {
+                onImageCaptured(imageUrl)
             }
         }
         
@@ -46,7 +47,7 @@ fun CameraScreen(
                     )
                 }
                 
-                if (uiState.error != null) {
+                uiState.error?.let { error ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -56,7 +57,7 @@ fun CameraScreen(
                         )
                     ) {
                         Text(
-                            text = uiState.error,
+                            text = error,
                             modifier = Modifier.padding(16.dp),
                             color = MaterialTheme.colorScheme.onErrorContainer
                         )

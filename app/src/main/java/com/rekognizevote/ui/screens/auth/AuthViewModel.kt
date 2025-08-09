@@ -51,6 +51,9 @@ class AuthViewModel @Inject constructor(
                         error = result.exception.message
                     )
                 }
+                is Result.Loading -> {
+                    // Estado já definido acima
+                }
             }
         }
     }
@@ -101,6 +104,9 @@ class AuthViewModel @Inject constructor(
                         isLoading = false,
                         error = result.exception.message
                     )
+                }
+                is Result.Loading -> {
+                    // Estado já definido acima
                 }
             }
         }

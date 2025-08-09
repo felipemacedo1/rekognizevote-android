@@ -1,9 +1,10 @@
 package com.rekognizevote.domain.repository
 
 import com.rekognizevote.core.Result
-import com.rekognizevote.domain.model.VoteResponse
+import com.rekognizevote.data.dto.PresignedUrlResponse
+import com.rekognizevote.domain.model.Vote
 
 interface VoteRepository {
-    suspend fun submitVote(pollId: String, candidateId: String, imageUri: String): Result<VoteResponse>
-    suspend fun uploadImage(imageUri: String): Result<String>
+    suspend fun submitVote(pollId: String, candidateId: String, faceImageUrl: String): Result<Vote>
+    suspend fun getPresignedUrl(): Result<PresignedUrlResponse>
 }

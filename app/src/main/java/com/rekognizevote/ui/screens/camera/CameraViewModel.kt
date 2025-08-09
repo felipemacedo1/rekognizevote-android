@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rekognizevote.core.Result
 import com.rekognizevote.core.utils.ImageUtils
+import com.rekognizevote.data.dto.PresignedUrlResponse
 import com.rekognizevote.domain.repository.VoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,7 +36,7 @@ class CameraViewModel @Inject constructor(
                 
                 // Obter URL pré-assinada
                 when (val urlResult = voteRepository.getPresignedUrl()) {
-                    is Result.Success -> {
+                    is Result.Success<PresignedUrlResponse> -> {
                         val presignedUrl = urlResult.data
                         
                         // Upload para S3
@@ -50,7 +51,7 @@ class CameraViewModel @Inject constructor(
                         if (response.isSuccessful) {
                             _uiState.value = _uiState.value.copy(
                                 isUploading = false,
-                                imageUrl = presignedUrl.imageUrl
+                                imageUrl = presignedUrl.uploadUrl
                             )
                         } else {
                             _uiState.value = _uiState.value.copy(

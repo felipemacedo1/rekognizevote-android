@@ -14,12 +14,6 @@ data class Vote(
 )
 
 @Serializable
-data class VoteRequest(
-    val candidateId: String,
-    val evidenceKey: String
-)
-
-@Serializable
 data class VoteResponse(
     val success: Boolean,
     val message: String,

@@ -35,17 +35,12 @@ interface ApiService {
     ): Response<Unit>
     
     @POST("polls/{id}/vote")
-    suspend fun submitVote(
+    suspend fun vote(
         @Path("id") pollId: String,
         @Body request: VoteRequest
-    ): Response<VoteResponse>
+    ): Response<Vote>
     
     @GET("upload/presigned-url")
     suspend fun getPresignedUrl(@Query("type") type: String): Response<PresignedUrlResponse>
 }
 
-@kotlinx.serialization.Serializable
-data class PresignedUrlResponse(
-    val uploadUrl: String,
-    val key: String
-)

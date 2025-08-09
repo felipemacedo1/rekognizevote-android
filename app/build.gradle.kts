@@ -77,6 +77,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
+    ksp(libs.hilt.android.compiler)
     
     // Network
     implementation(libs.retrofit)

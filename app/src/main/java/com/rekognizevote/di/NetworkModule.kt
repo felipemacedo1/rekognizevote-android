@@ -3,7 +3,7 @@ package com.rekognizevote.di
 import com.rekognizevote.BuildConfig
 import com.rekognizevote.core.Constants
 import com.rekognizevote.data.remote.ApiService
-import com.rekognizevote.utils.SecurePreferences
+import com.rekognizevote.data.local.SecureStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,10 +31,10 @@ object NetworkModule {
     
     @Provides
     @Singleton
-    fun provideAuthInterceptor(securePreferences: SecurePreferences): Interceptor {
+    fun provideAuthInterceptor(secureStorage: SecureStorage): Interceptor {
         return Interceptor { chain ->
             val originalRequest = chain.request()
-            val token = securePreferences.getString(Constants.ACCESS_TOKEN_KEY)
+            val token = secureStorage.getToken()
             
             val newRequest = if (!token.isNullOrEmpty()) {
                 originalRequest.newBuilder()

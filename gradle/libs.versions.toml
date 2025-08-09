@@ -17,7 +17,7 @@ navigationCompose = "2.8.5"
 lifecycleViewmodel = "2.8.7"
 
 # Hilt
-hilt = "2.51.1"
+hilt = "2.50"
 hiltNavigationCompose = "1.2.0"
 
 # Network

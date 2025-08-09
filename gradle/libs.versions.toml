@@ -1,13 +1,13 @@
 [versions]
-# Core Build Tools - JDK 21 Compatible
-agp = "8.7.3"
-kotlin = "2.1.0"
-ksp = "2.1.0-1.0.29"
+# Core Build Tools - Stable Matrix
+agp = "8.4.2"
+kotlin = "1.9.24"
+ksp = "1.9.24-1.0.20"
 composeCompiler = "1.5.15"
 javapoet = "1.13.0"
 
 # Android Core
-coreKtx = "1.16.0"
+coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -21,13 +21,13 @@ navigationCompose = "2.8.5"
 lifecycleViewmodel = "2.8.7"
 
 # Hilt - Stable Matrix
-hilt = "2.48"
-hiltNavigationCompose = "1.2.0"
+hilt = "2.44"
+hiltNavigationCompose = "1.0.0"
 
 # Network
 retrofit = "2.11.0"
 okhttp = "4.12.0"
-kotlinxSerialization = "1.7.3"
+kotlinxSerialization = "1.6.3"
 
 # Camera
 camerax = "1.4.1"

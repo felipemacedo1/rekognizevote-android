@@ -2,9 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
+    kotlin("kapt")
     alias(libs.plugins.hilt)
-    alias(libs.plugins.compose.compiler)
 }
 
 // Dependency constraints for JavaPoet conflict resolution
@@ -25,12 +24,12 @@ configurations.all {
 
 android {
     namespace = "com.rekognizevote"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.rekognizevote"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -71,6 +70,10 @@ android {
         buildConfig = true
     }
     
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.14"
+    }
+    
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -93,10 +96,10 @@ dependencies {
     implementation(libs.compose.navigation)
     implementation(libs.lifecycle.viewmodel.compose)
     
-    // Hilt - Unified version management
+    // Hilt - Using KAPT for stability
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
-    ksp(libs.hilt.android.compiler)
+    kapt(libs.hilt.android.compiler)
     
     // Network
     implementation(libs.retrofit)

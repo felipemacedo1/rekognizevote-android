@@ -1,5 +1,6 @@
 package com.rekognizevote.data.remote
 
+import com.rekognizevote.data.dto.*
 import com.rekognizevote.domain.model.*
 import retrofit2.Response
 import retrofit2.http.*

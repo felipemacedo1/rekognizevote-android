@@ -1,18 +1,18 @@
 package com.rekognizevote.data.repository
 
-import com.rekognizevote.core.Constants
 import com.rekognizevote.core.Result
+import com.rekognizevote.data.dto.*
+import com.rekognizevote.data.local.SecureStorage
 import com.rekognizevote.data.remote.ApiService
 import com.rekognizevote.domain.model.*
 import com.rekognizevote.domain.repository.AuthRepository
-import com.rekognizevote.utils.SecurePreferences
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AuthRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
-    private val securePreferences: SecurePreferences
+    private val secureStorage: SecureStorage
 ) : AuthRepository {
     
     override suspend fun login(email: String, password: String): Result<AuthResponse> {
@@ -21,9 +21,10 @@ class AuthRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 response.body()?.let { authResponse ->
                     // Salvar tokens
-                    securePreferences.saveString(Constants.ACCESS_TOKEN_KEY, authResponse.accessToken)
-                    securePreferences.saveString(Constants.REFRESH_TOKEN_KEY, authResponse.refreshToken)
-                    securePreferences.saveString(Constants.USER_ID_KEY, authResponse.user.id)
+                    secureStorage.saveToken(authResponse.accessToken)
+                    secureStorage.saveRefreshToken(authResponse.refreshToken)
+                    secureStorage.saveUserId(authResponse.user.id)
+                    secureStorage.saveUserEmail(authResponse.user.email)
                     
                     Result.Success(authResponse)
                 } ?: Result.Error(Exception("Resposta vazia"))
@@ -41,9 +42,10 @@ class AuthRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 response.body()?.let { authResponse ->
                     // Salvar tokens
-                    securePreferences.saveString(Constants.ACCESS_TOKEN_KEY, authResponse.accessToken)
-                    securePreferences.saveString(Constants.REFRESH_TOKEN_KEY, authResponse.refreshToken)
-                    securePreferences.saveString(Constants.USER_ID_KEY, authResponse.user.id)
+                    secureStorage.saveToken(authResponse.accessToken)
+                    secureStorage.saveRefreshToken(authResponse.refreshToken)
+                    secureStorage.saveUserId(authResponse.user.id)
+                    secureStorage.saveUserEmail(authResponse.user.email)
                     
                     Result.Success(authResponse)
                 } ?: Result.Error(Exception("Resposta vazia"))
@@ -61,8 +63,8 @@ class AuthRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 response.body()?.let { tokenResponse ->
                     // Atualizar tokens
-                    securePreferences.saveString(Constants.ACCESS_TOKEN_KEY, tokenResponse.accessToken)
-                    securePreferences.saveString(Constants.REFRESH_TOKEN_KEY, tokenResponse.refreshToken)
+                    secureStorage.saveToken(tokenResponse.accessToken)
+                    secureStorage.saveRefreshToken(tokenResponse.refreshToken)
                     
                     // Buscar dados do usuário
                     val userResponse = apiService.getCurrentUser()
@@ -87,12 +89,11 @@ class AuthRepositoryImpl @Inject constructor(
     }
     
     override suspend fun logout() {
-        securePreferences.clear()
+        secureStorage.clearAll()
     }
     
     override suspend fun isLoggedIn(): Boolean {
-        val token = securePreferences.getString(Constants.ACCESS_TOKEN_KEY)
-        return !token.isNullOrEmpty()
+        return secureStorage.isLoggedIn()
     }
     
     override suspend fun getCurrentUser(): Result<User> {

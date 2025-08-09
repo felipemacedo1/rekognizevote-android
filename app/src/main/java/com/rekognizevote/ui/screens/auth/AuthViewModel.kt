@@ -7,14 +7,11 @@ import com.rekognizevote.core.validation.FormValidator
 import com.rekognizevote.core.validation.ValidationResult
 import com.rekognizevote.domain.model.AuthResponse
 import com.rekognizevote.domain.repository.AuthRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class AuthViewModel @Inject constructor(
+class AuthViewModel(
     private val authRepository: AuthRepository
 ) : ViewModel() {
     

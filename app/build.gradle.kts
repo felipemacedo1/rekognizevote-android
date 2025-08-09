@@ -2,8 +2,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-    kotlin("kapt")
-    alias(libs.plugins.hilt)
 }
 
 // Dependency constraints for JavaPoet conflict resolution
@@ -96,10 +94,7 @@ dependencies {
     implementation(libs.compose.navigation)
     implementation(libs.lifecycle.viewmodel.compose)
     
-    // Hilt - Using KAPT for stability
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.navigation.compose)
-    kapt(libs.hilt.android.compiler)
+
     
     // Network
     implementation(libs.retrofit)

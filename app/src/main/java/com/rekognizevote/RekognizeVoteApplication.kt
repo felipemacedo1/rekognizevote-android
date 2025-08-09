@@ -1,10 +1,10 @@
 package com.rekognizevote
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+import com.rekognizevote.data.local.SecureStorage
+import com.rekognizevote.di.AppModule
 import timber.log.Timber
 
-@HiltAndroidApp
 class RekognizeVoteApplication : Application() {
     
     override fun onCreate() {
@@ -13,5 +13,7 @@ class RekognizeVoteApplication : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+        
+        AppModule.secureStorage = SecureStorage(this)
     }
 }

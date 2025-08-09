@@ -6,11 +6,7 @@ import com.rekognizevote.data.local.SecureStorage
 import com.rekognizevote.data.remote.ApiService
 import com.rekognizevote.domain.model.*
 import com.rekognizevote.domain.repository.AuthRepository
-import javax.inject.Inject
-import javax.inject.Singleton
-
-@Singleton
-class AuthRepositoryImpl @Inject constructor(
+class AuthRepositoryImpl(
     private val apiService: ApiService,
     private val secureStorage: SecureStorage
 ) : AuthRepository {

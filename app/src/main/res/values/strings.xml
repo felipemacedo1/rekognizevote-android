@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RekognizeVote</string>
+    
+    <!-- Onboarding -->
+    <string name="onboarding_title_1">Votação Segura</string>
+    <string name="onboarding_desc_1">Vote com segurança usando reconhecimento facial para garantir a autenticidade do seu voto.</string>
+    <string name="onboarding_title_2">Fácil e Rápido</string>
+    <string name="onboarding_desc_2">Interface simples e intuitiva para participar de enquetes públicas e privadas.</string>
+    <string name="onboarding_title_3">Resultados em Tempo Real</string>
+    <string name="onboarding_desc_3">Acompanhe os resultados das votações em tempo real com gráficos detalhados.</string>
+    
+    <!-- Auth -->
+    <string name="login_title">Entre na sua conta</string>
+    <string name="register_title">Criar Conta</string>
+    <string name="email">E-mail</string>
+    <string name="password">Senha</string>
+    <string name="confirm_password">Confirmar senha</string>
+    <string name="full_name">Nome completo</string>
+    <string name="login">Entrar</string>
+    <string name="register">Cadastrar</string>
+    <string name="no_account">Não tem conta?</string>
+    <string name="sign_up">Cadastre-se</string>
+    <string name="have_account">Já tem conta?</string>
+    <string name="sign_in">Faça login</string>
+    
+    <!-- Polls -->
+    <string name="active_polls">Ativas</string>
+    <string name="upcoming_polls">Futuras</string>
+    <string name="closed_polls">Encerradas</string>
+    <string name="private_poll">Privada</string>
+    <string name="votes_count">%d votos</string>
+    <string name="poll_active">Ativa</string>
+    <string name="poll_upcoming">Em breve</string>
+    <string name="poll_closed">Encerrada</string>
+    
+    <!-- Vote -->
+    <string name="vote">Votar</string>
+    <string name="confirm_vote">Confirmar com Reconhecimento Facial</string>
+    <string name="select_candidate">Selecione um candidato para votar:</string>
+    <string name="already_voted">Você já votou nesta enquete</string>
+    <string name="poll_not_started">Enquete ainda não iniciada</string>
+    
+    <!-- Results -->
+    <string name="results">Resultados</string>
+    <string name="winner">Vencedor</string>
+    <string name="all_results">Todos os Resultados</string>
+    <string name="total_votes">Total de votos: %d</string>
+    <string name="view_results">Ver Resultados</string>
+    
+    <!-- Camera -->
+    <string name="position_face">Posicione seu rosto na câmera</string>
+    <string name="capture">Capturar</string>
+    <string name="cancel">Cancelar</string>
+    
+    <!-- Access Code -->
+    <string name="private_poll_title">Enquete Privada</string>
+    <string name="access_code_message">Esta enquete é privada. Digite o código de acesso:</string>
+    <string name="access_code">Código de acesso</string>
+    <string name="confirm">Confirmar</string>
+    
+    <!-- Common -->
+    <string name="back">Voltar</string>
+    <string name="retry">Tentar novamente</string>
+    <string name="loading">Carregando...</string>
+    <string name="error_generic">Erro desconhecido</string>
+    <string name="error_network">Erro de conexão</string>
+    <string name="error_loading_polls">Erro ao carregar enquetes</string>
+    <string name="error_loading_poll">Erro ao carregar enquete</string>
+    <string name="error_loading_results">Erro ao carregar resultados</string>
+    <string name="success_vote">Voto registrado com sucesso!</string>
+</resources>

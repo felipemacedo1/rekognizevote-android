@@ -5,7 +5,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.rekognizevote.di.AppModule
+
 import com.rekognizevote.ui.ViewModelFactory
 import com.rekognizevote.ui.screens.auth.AuthViewModel
 import com.rekognizevote.ui.screens.auth.LoginScreen
@@ -30,7 +30,7 @@ fun RekognizeVoteNavigation(navController: NavHostController) {
     ) {
         composable("splash") {
             SplashScreen(
-                onNavigateToAuth = { navController.navigate("login") },
+                onNavigateToOnboarding = { navController.navigate("login") },
                 onNavigateToHome = { navController.navigate("home") }
             )
         }
@@ -56,10 +56,10 @@ fun RekognizeVoteNavigation(navController: NavHostController) {
         composable("home") {
             val viewModel: PollsViewModel = viewModel(factory = viewModelFactory)
             HomeScreen(
-                onNavigateToPollDetails = { pollId ->
+                onNavigateToPollDetails = { pollId: String ->
                     navController.navigate("poll_details/$pollId")
                 },
-                onNavigateToResults = { pollId ->
+                onNavigateToResults = { pollId: String ->
                     navController.navigate("results/$pollId")
                 },
                 viewModel = viewModel
@@ -72,7 +72,7 @@ fun RekognizeVoteNavigation(navController: NavHostController) {
             PollDetailsScreen(
                 pollId = pollId,
                 onNavigateBack = { navController.popBackStack() },
-                onNavigateToVote = { pollId ->
+                onNavigateToVote = { pollId: String ->
                     navController.navigate("vote/$pollId")
                 },
                 viewModel = viewModel
@@ -103,7 +103,7 @@ fun RekognizeVoteNavigation(navController: NavHostController) {
         composable("camera") {
             val viewModel: CameraViewModel = viewModel(factory = viewModelFactory)
             CameraScreen(
-                onImageCaptured = { imageUri ->
+                onImageCaptured = { imageUri: String ->
                     navController.popBackStack()
                 },
                 onDismiss = { navController.popBackStack() },

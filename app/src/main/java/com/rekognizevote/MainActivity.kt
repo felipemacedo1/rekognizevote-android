@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
 import com.rekognizevote.ui.navigation.RekognizeVoteNavigation
 import com.rekognizevote.ui.theme.RekognizeVoteTheme
 
@@ -19,9 +20,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             RekognizeVoteTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    RekognizeVoteNavigation(
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    val navController = rememberNavController()
+                    RekognizeVoteNavigation(navController)
                 }
             }
         }

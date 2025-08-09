@@ -15,18 +15,18 @@ Aplicativo Android para votação segura com reconhecimento facial usando AWS Re
 - **Clean Architecture**: Separação em camadas (data, domain, ui)
 - **MVVM**: Pattern com ViewModels e StateFlow
 - **Jetpack Compose**: UI moderna e declarativa
-- **Hilt**: Injeção de dependência
+- **DI Manual**: Injeção de dependência com AppModule
 - **Retrofit**: Cliente HTTP para APIs REST
 - **CameraX**: Captura de imagens para reconhecimento facial
 
 ## 📱 Tecnologias
 
-- **Kotlin**: Linguagem principal
+- **Kotlin**: Linguagem principal (1.9.24)
 - **Jetpack Compose**: Framework de UI
 - **Material Design 3**: Sistema de design
-- **Hilt**: Injeção de dependência
+- **DI Manual**: AppModule + ViewModelFactory
 - **Retrofit + OkHttp**: Networking
-- **Kotlinx Serialization**: Serialização JSON
+- **Kotlinx Serialization**: Serialização JSON (1.6.3)
 - **CameraX**: Captura de câmera
 - **Coil**: Carregamento de imagens
 - **Security Crypto**: Armazenamento seguro
@@ -49,9 +49,10 @@ Aplicativo Android para votação segura com reconhecimento facial usando AWS Re
 ## 🛠️ Configuração do Projeto
 
 ### Pré-requisitos
-- Android Studio Arctic Fox ou superior
-- JDK 11+
-- Android SDK 24+
+- Android Studio Flamingo ou superior
+- JDK 21 (recomendado)
+- Android SDK 24+ (compileSdk 34)
+- Gradle 8.11.1
 
 ### Instalação
 
@@ -71,6 +72,13 @@ BASE_URL_PROD="https://api.rekognizevote.com/"
 ```
 
 4. Sincronize o projeto e execute
+
+### Versões Estáveis
+
+- **AGP**: 8.4.2
+- **Kotlin**: 1.9.24
+- **Compose**: 2024.12.01
+- **Target SDK**: 34
 
 ### Build Variants
 
@@ -141,6 +149,22 @@ GET /upload/presigned-url?type=face_evidence
 ### Gerar AAB (Android App Bundle)
 ```bash
 ./gradlew bundleRelease
+```
+
+### Resolução de Problemas
+
+#### JavaPoet/Hilt Conflicts (Resolvido)
+Este projeto **removeu completamente o Hilt** para eliminar conflitos de dependência:
+- ✅ Sem erros `ClassName.canonicalName()`
+- ✅ Sem `hiltAggregateDepsDebug` failures
+- ✅ DI manual com `AppModule` e `ViewModelFactory`
+
+#### Build Limpo
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+./gradlew --stop
+rm -rf .gradle/
+./gradlew clean assembleDebug --no-configuration-cache
 ```
 
 ## 🔧 Configuração do Backend
